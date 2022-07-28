@@ -1,0 +1,36 @@
+var gameOfLife = function(board) {
+    const copyOfBoard = board.map((arr) => [...arr])
+    const rowsLength = copyOfBoard[0].length
+    
+    const num = (value) => value || 0
+    
+    for (let i = 0; i < copyOfBoard.length; i += 1) {
+        const prevRow = copyOfBoard[i - 1] || []
+        const currRow = copyOfBoard[i]
+        const nextRow = copyOfBoard[i + 1] || []
+        
+        for(let j = 0; j < rowsLength; j += 1) {
+            const population = num(prevRow[j - 1])
+                + num(prevRow[j])
+                + num(prevRow[j + 1])
+                + num(currRow[j - 1])
+                + num(currRow[j + 1])
+                + num(nextRow[j - 1])
+                + num(nextRow[j])
+                + num(nextRow[j + 1])
+
+            let newCell
+            const isAliveCell = copyOfBoard[i][j]
+
+            if (isAliveCell) {
+                const shouldCellDie = population < 2 || population > 3
+                newCell = shouldCellDie ? 0 : 1
+            } else {
+                const shoudCellReborn = population === 3
+                newCell = shoudCellReborn ? 1 : 0
+            }
+
+            board[i][j] = newCell
+        }
+    }
+};
